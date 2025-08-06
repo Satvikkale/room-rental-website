@@ -62,7 +62,7 @@ const AddRoom = () => {
         };
 
         try {
-            const response = await axios.post('http://localhost:5000/api/addroom', roomData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/addroom`, roomData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }

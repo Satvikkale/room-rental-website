@@ -13,7 +13,7 @@ const Home = () => {
         const fetchRooms = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:5000/api/rooms');
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/rooms`);
                 setRooms(response.data);
                 if (type === 'user') {
                     const filteredRooms = response.data.filter(room => room.status === true);
@@ -36,7 +36,7 @@ const Home = () => {
         setLoading(true);
         if (key) {
             try {
-                const response = await axios.get(`http://localhost:5000/search/${key}`);
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/search/${key}`);
                 const filteredRooms = response.data.filter(room => room.status === true);
                 setRooms(filteredRooms);
             } catch (error) {
@@ -47,7 +47,7 @@ const Home = () => {
         } else {
             const fetchRooms = async () => {
                 try {
-                    const response = await axios.get('http://localhost:5000/api/rooms');
+                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/rooms`);
                     const filteredRooms = response.data.filter(room => room.status === true);
                     setRooms(filteredRooms);
                 } catch (error) {
@@ -67,7 +67,7 @@ const Home = () => {
 
     const handleDeleteRoom = async (roomId) => {
         try {
-            await axios.delete(`http://localhost:5000/api/rooms/${roomId}`);
+            await axios.delete(`${process.env.REACT_APP_API_URL}/api/rooms/${roomId}`);
             setRooms(rooms.filter(room => room._id !== roomId));
             alert('Room deleted successfully');
         } catch (error) {
@@ -202,7 +202,7 @@ const Home = () => {
                                                         onClick={async () => {
                                                             try {
                                                                 const updatedRoom = { ...room, status: !room.status };
-                                                                await axios.put(`http://localhost:5000/api/rooms/${room._id}/availability`, { status: updatedRoom.status });
+                                                                await axios.put(`${process.env.REACT_APP_API_URL}/api/rooms/${room._id}/availability`, { status: updatedRoom.status });
                                                                 setRooms(rooms.map(r => r._id === room._id ? updatedRoom : r));
                                                             } catch (error) {
                                                                 console.error('Error updating room availability', error);

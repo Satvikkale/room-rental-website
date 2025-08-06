@@ -23,7 +23,7 @@ const Signup = () => {
         e.preventDefault();
         try {
             console.log('Sending signup request:', formData); // Add logging
-            const response = await axios.post('http://localhost:5000/api/signup', formData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/signup`, formData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

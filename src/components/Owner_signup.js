@@ -28,7 +28,7 @@ const OwnerSignup = () => {
         // Handle login logic here
         try {
             console.log('Sending signup request:', signData); // Add logging
-            const response = await axios.post('http://localhost:5000/api/owner_signup', signData, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/owner_signup`, signData, {
                 headers: {
                     'Content-Type': 'application/json',
                 },

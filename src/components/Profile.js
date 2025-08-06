@@ -16,7 +16,7 @@ const Profile = () => {
         const fetchProfile = async () => {
             setLoading(true);
             try {
-                const response = await axios.get('http://localhost:5000/api/profile', {
+                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, {
                     params: { email, type }
                 });
                 setProfile(response.data);
@@ -37,7 +37,7 @@ const Profile = () => {
         setImage(base64);
 
         try {
-            await axios.put('http://localhost:5000/api/profile', {
+            await axios.put(`${process.env.REACT_APP_API_URL}/api/profile`, {
                 email,
                 type,
                 profileImage: base64
