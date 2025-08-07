@@ -62,7 +62,7 @@ const AddRoom = () => {
         };
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/addroom`, roomData, {
+            const response = await axios.post('https://backend-fswr.onrender.com/api/addroom', roomData, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
