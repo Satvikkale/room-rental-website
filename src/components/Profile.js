@@ -19,7 +19,6 @@ const Profile = () => {
                     params: { email, type }
                 });
                 setProfile(response.data);
-                setImage(response.data.profileImage);
             } catch (error) {
                 console.error('Error fetching profile details', error);
             } finally {
@@ -30,7 +29,7 @@ const Profile = () => {
         fetchProfile();
     }, [email, type]);
 
-
+    
     if (loading) {
         return <div>Loading...</div>;
     }
@@ -83,3 +82,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
