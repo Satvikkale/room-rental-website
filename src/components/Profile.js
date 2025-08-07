@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 const Profile = () => {
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [image, setImage] = useState(null);
     const email = JSON.parse(localStorage.getItem('user')).email;
 
     const isLoggedIn = !!localStorage.getItem('token');
@@ -31,30 +30,6 @@ const Profile = () => {
         fetchProfile();
     }, [email, type]);
 
-    const handleImageChange = async (e) => {
-        const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setImage(base64);
-
-        try {
-            await axios.put(`${process.env.REACT_APP_API_URL}/api/profile`, {
-                email,
-                type,
-                profileImage: base64
-            });
-        } catch (error) {
-            console.error('Error updating profile image', error);
-        }
-    };
-
-    const convertToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result);
-            reader.onerror = (error) => reject(error);
-        });
-    };
 
     if (loading) {
         return <div>Loading...</div>;
@@ -93,14 +68,6 @@ const Profile = () => {
                     </div>
 
                     <div className="mt-4 sm:mt-0 sm:shrink-0 ">
-                        <img
-                            alt=""
-                            src={image || "https://via.placeholder.com/150"}
-                            className="w-32 h-32 rounded-lg object-cover shadow-sm"
-                        />
-                        {!image && (
-                            <input type="file" onChange={handleImageChange} className="mt-2" />
-                        )}
                         {isLoggedIn && (
                             <button onClick={handleLogout} className="text-black text-md font-semibold mt-3 transition-transform duration-500 ease-in-out transform hover:scale-110">
                                 Logout <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
