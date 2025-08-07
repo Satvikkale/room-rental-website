@@ -29,11 +29,22 @@ const AddRoom = () => {
     const handleImageChange = async (e) => {
         const { name } = e.target;
         const file = e.target.files[0];
-        const base64 = await convertToBase64(file);
-        setRoomDetails({
-            ...roomDetails,
-            [name]: base64
-        });
+        
+        if (!file) return;
+        
+        console.log(`Processing ${name}:`, file.name); // Debug log
+        
+        try {
+            const base64 = await convertToBase64(file);
+            setRoomDetails(prevState => ({
+                ...prevState,
+                [name]: base64
+            }));
+            console.log(`${name} converted to base64`); // Debug log
+        } catch (error) {
+            console.error(`Error converting ${name}:`, error);
+            alert(`Error uploading ${name}`);
+        }
     };
 
     const convertToBase64 = (file) => {
@@ -47,10 +58,22 @@ const AddRoom = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        // Validate required fields
+        if (!roomDetails.ownerName || !roomDetails.price || !roomDetails.location) {
+            alert('Please fill in all required fields');
+            return;
+        }
+        
+        if (!roomDetails.image) {
+            alert('Please upload at least the first image');
+            return;
+        }
+        
         const roomData = {
             image: roomDetails.image,
-            image2: roomDetails.image2,
-            image3: roomDetails.image3,
+            image2: roomDetails.image2 || '', // Ensure empty string if no image
+            image3: roomDetails.image3 || '', // Ensure empty string if no image
             status: true,
             ownerName: roomDetails.ownerName,
             price: roomDetails.price,
@@ -61,6 +84,12 @@ const AddRoom = () => {
             discription: roomDetails.discription
         };
 
+        console.log('Submitting room with images:', {
+            hasImage: !!roomData.image,
+            hasImage2: !!roomData.image2,
+            hasImage3: !!roomData.image3
+        }); // Debug log
+
         try {
             const response = await axios.post('https://backend-fswr.onrender.com/api/addroom', roomData, {
                 headers: {
@@ -68,12 +97,13 @@ const AddRoom = () => {
                 }
             });
             if (response.status === 201) {
-                alert('Room added successfully');
+                alert('Room added successfully with all images');
                 navigate('/');
             } else {
                 alert('Fill all the fields to add room');
             }
         } catch (error) {
+            console.error('Error adding room:', error);
             alert('Error adding room');
         }
     };
@@ -83,39 +113,46 @@ const AddRoom = () => {
             <form onSubmit={handleSubmit} className="w-full max-w-xl p-8 space-y-6 mb-[100px] bg-white rounded shadow-md mt-5">
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image">
-                        Upload Room Image
+                        Upload Room Image 1 (Required) *
                     </label>
                     <input
                         type="file"
                         id="image"
                         name="image"
+                        accept="image/*"
                         onChange={handleImageChange}
                         className="w-full px-3 py-2 border rounded-lg"
+                        required
                     />
+                    {roomDetails.image && <p className="text-green-600 text-sm mt-1">✓ Image 1 uploaded</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image2">
-                        Upload Room Image 2
+                        Upload Room Image 2 (Optional)
                     </label>
                     <input
                         type="file"
                         id="image2"
                         name="image2"
+                        accept="image/*"
                         onChange={handleImageChange}
                         className="w-full px-3 py-2 border rounded-lg"
                     />
+                    {roomDetails.image2 && <p className="text-green-600 text-sm mt-1">✓ Image 2 uploaded</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="image3">
-                        Upload Room Image 3
+                        Upload Room Image 3 (Optional)
                     </label>
                     <input
                         type="file"
                         id="image3"
                         name="image3"
+                        accept="image/*"
                         onChange={handleImageChange}
                         className="w-full px-3 py-2 border rounded-lg"
                     />
+                    {roomDetails.image3 && <p className="text-green-600 text-sm mt-1">✓ Image 3 uploaded</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="ownerName">
