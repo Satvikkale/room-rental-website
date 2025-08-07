@@ -36,7 +36,7 @@ const Home = () => {
         setLoading(true);
         if (key) {
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/search/${key}`);
+                const response = await axios.get(`https://backend-fswr.onrender.com/search/${key}`);
                 const filteredRooms = response.data.filter(room => room.status === true);
                 setRooms(filteredRooms);
             } catch (error) {
@@ -47,7 +47,7 @@ const Home = () => {
         } else {
             const fetchRooms = async () => {
                 try {
-                    const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/rooms`);
+                    const response = await axios.get('https://backend-fswr.onrender.com/api/rooms');
                     const filteredRooms = response.data.filter(room => room.status === true);
                     setRooms(filteredRooms);
                 } catch (error) {
@@ -67,7 +67,7 @@ const Home = () => {
 
     const handleDeleteRoom = async (roomId) => {
         try {
-            await axios.delete(`${process.env.REACT_APP_API_URL}/api/rooms/${roomId}`);
+            await axios.delete(`https://backend-fswr.onrender.com/api/rooms/${roomId}`);
             setRooms(rooms.filter(room => room._id !== roomId));
             alert('Room deleted successfully');
         } catch (error) {
