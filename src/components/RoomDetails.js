@@ -12,7 +12,7 @@ const RoomDetails = () => {
         const fetchRoomDetails = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/rooms/${id}`);
+                const response = await axios.get(`https://backend-fswr.onrender.com/api/rooms/${id}`);
                 setRoom(response.data);
             } catch (error) {
                 console.error('Error fetching room details', error);
