@@ -16,7 +16,7 @@ const Profile = () => {
         const fetchProfile = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/profile`, {
+                const response = await axios.get('https://backend-fswr.onrender.com/api/profile', {
                     params: { email, type }
                 });
                 setProfile(response.data);
