@@ -13,7 +13,7 @@ const Home = () => {
         const fetchRooms = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/rooms`);
+                const response = await axios.get('https://backend-fswr.onrender.com/api/rooms');
                 setRooms(response.data);
                 if (type === 'user') {
                     const filteredRooms = response.data.filter(room => room.status === true);
