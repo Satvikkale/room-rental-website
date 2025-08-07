@@ -16,7 +16,7 @@ const OwnerLogin = () => {
             return;
         }
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/owner_login`, { email, password });
+            const response = await axios.post('https://backend-fswr.onrender.com/api/owner_login', { email, password });
             const data = response.data;
             if (data && data.email === email) {
                 localStorage.setItem('token', data.token);
